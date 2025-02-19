@@ -126,8 +126,7 @@ def Postuler(pdf_path, name, email, lettre_motiv, driver, sb):
 
 
 def main(EMAIL, PASSWORD, NAME, ADRESSE, PHONE, today_date, LANGUE, pdf_path, poste):
-    chrome_path = os.path.join(os.getcwd(), 'chrome_install', 'opt', 'google', 'chrome', 'chrome')
-    with SB(uc=True, test=True, locale_code="en", headless=True, browser_executable_path=chrome_path) as sb:
+    with SB(uc=True, test=True, locale_code="en", headless=True) as sb:
         url = "https://www.tanitjobs.com/login/"
         sb.open(url)
         sb.wait(2)
