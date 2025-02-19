@@ -123,7 +123,7 @@ def Postuler(pdf_path, name, email, lettre_motiv, driver, sb):
 
 
 def main(EMAIL, PASSWORD, NAME, ADRESSE, PHONE, today_date, LANGUE, pdf_path, poste):
-    with SB(uc=True, test=True, locale_code="en", headless=False) as sb:
+    with SB(uc=True, test=True, locale_code="en", headless=True) as sb:
         url = "https://www.tanitjobs.com/login/"
         sb.open(url)
         sb.wait(2)
