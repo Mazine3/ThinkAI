@@ -5,4 +5,5 @@ beautifulsoup4
 selenium
 langchain_groq
 langchain_core
+undetected-chromedriver
 gunicorn
