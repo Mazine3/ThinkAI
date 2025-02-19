@@ -7,6 +7,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from create_motivation_letter import get_llm_response
 import os
 
+os.environ["SB_BROWSER"] = "chrome"
+os.environ["CHROME_BIN"] = "/usr/bin/google-chrome"
+
 def login(email, password, driver, sb):
     sb.wait_for_element_visible('name=username', timeout=10)
     input_email = driver.find_element(By.NAME, 'username')
