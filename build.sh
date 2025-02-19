@@ -20,3 +20,9 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 mkdir -p chrome_install
 dpkg -x google-chrome-stable_current_amd64.deb chrome_install/
 chmod +x chrome_install/opt/google/chrome/chrome  # Ensure executable permissions
+
+
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+sudo apt-get install -f
+
