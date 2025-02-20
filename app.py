@@ -3,16 +3,15 @@ from create_main import main  # Your function to handle the job application logi
 import json
 import os
 from datetime import datetime, timedelta
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 from functools import wraps
 
 # Load environment variables
-# load_dotenv()
+load_dotenv()
 
-# PORT = os.getenv('PORT','')
-# DEBUG = os.getenv('DEBUG', '')
-
-SECRET_KEY = "my_secrt_key"
+PORT = os.getenv('PORT','')
+DEBUG = os.getenv('DEBUG', '')
+SECRET_KEY = os.getenv('secret_key', 'mysecretkey')  # Provide default if not found
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -178,4 +177,3 @@ def logout():
     session.pop("username", None)
     flash("You have been logged out.", "info")
     return redirect(url_for("login"))
-
