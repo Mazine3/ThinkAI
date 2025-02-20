@@ -7,3 +7,4 @@ langchain_groq
 langchain_core
 undetected-chromedriver
 gunicorn
+geckodriver-autoinstaller
