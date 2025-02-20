@@ -1,28 +1,22 @@
-# Install system dependencies (if possible without sudo)
-apt-get update && apt-get install -y \
-    libnss3 \
-    libx11-xcb1 \
-    libxcb1 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxext6 \
-    libxi6 \
-    libxrandr2 \
-    libxss1 \
-    libxtst6 \
-    --no-install-recommends
+#!/usr/bin/env bash
+# exit on error
+set -o errexit
 
+STORAGE_DIR=/opt/render/project/.render
 
-#!/bin/bash
-# Install Chrome
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-mkdir -p chrome_install
-dpkg -x google-chrome-stable_current_amd64.deb chrome_install/
-chmod +x chrome_install/opt/google/chrome/chrome  # Ensure executable permissions
+if [[ ! -d $STORAGE_DIR/chrome ]]; then
+  echo "...Downloading Chrome"
+  mkdir -p $STORAGE_DIR/chrome
+  cd $STORAGE_DIR/chrome
+  wget -P ./ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  dpkg -x ./google-chrome-stable_current_amd64.deb $STORAGE_DIR/chrome
+  rm ./google-chrome-stable_current_amd64.deb
+  cd $HOME/project/src # Make sure we return to where we were
+else
+  echo "...Using Chrome from cache"
+fi
 
+# be sure to add Chromes location to the PATH as part of your Start Command
+# export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg -i google-chrome-stable_current_amd64.deb
-sudo apt-get install -f
-
+# add your own build commands...
