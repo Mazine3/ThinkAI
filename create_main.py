@@ -6,9 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from create_motivation_letter import get_llm_response
 import os
-
-os.environ["SB_BROWSER"] = "chrome"
-os.environ["CHROME_BIN"] = "/usr/bin/google-chrome"
+from utils.logging import logger
 
 def login(email, password, driver, sb):
     sb.wait_for_element_visible('name=username', timeout=10)
@@ -74,7 +72,7 @@ def get_offer_details(offer_link, driver, sb):
         exigences_element = soup.find('h3', class_='details-body__title', text="Exigences de l'emploi")
         job_requirements = exigences_element.find_next('div', class_='details-body__content').get_text(separator=' ', strip=True)
     except Exception:
-        print("")
+        logger.warn("something wrong !!")
 
     # company name
     li_element = soup.find('li', class_='listing-item__info--item listing-item__info--item-company')
@@ -136,28 +134,27 @@ def main(EMAIL, PASSWORD, NAME, ADRESSE, PHONE, today_date, LANGUE, pdf_path, po
 
         try:
             login(EMAIL, PASSWORD, driver, sb)
-            print("login with success")
+            logger.info("Login success")
         except Exception:
-            print("user or password inccorect !!")
+            logger.error("Login failed")
+            return "login failed"
 
         sb.wait(2)
         sb.open("https://www.tanitjobs.com")
 
         post_chercher(poste, driver)
-        print("end cherche les postes")
+        logger.info("Search for postes")
         sb.wait(1)
 
         offers_links = get_offers(driver)
-        print("get all the offers")
 
         # for offer_link in offers_links:
-        print("this is the post link:",offers_links[10])
-        informations_offre, post_name, company_name = get_offer_details(offers_links[10], driver, sb)
-        print("get offers détails")
-        lettre_motiv = get_llm_response(informations_offre, EMAIL, NAME, ADRESSE, PHONE, today_date, LANGUE)
-        print("create lettre motiviation")
-        Postuler(pdf_path, NAME, EMAIL, lettre_motiv, driver, sb)
-        print("this is lettre motivation: ", lettre_motiv)
-        print(" ")
-        print("votre condidature a éte envoyer !")
+        logger.info(f"Offer link: {offers_links[12]}")
+        informations_offre, post_name, company_name = get_offer_details(offers_links[12], driver, sb)
+        logger.info("Get offers détails")
+        motivation_lettre= get_llm_response(informations_offre, EMAIL, NAME, ADRESSE, PHONE, today_date, LANGUE)
+        logger.info("Lettre de motivation has been created successfully")
+        Postuler(pdf_path, NAME, EMAIL, motivation_lettre, driver, sb)
+        logger.info("Motivation lettre: {}".format(motivation_lettre))
+        logger.info("Your candidature has been envoyée with success")
         sb.wait(20)
